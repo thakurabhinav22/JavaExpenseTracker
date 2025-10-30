@@ -8,10 +8,6 @@ import java.util.*;
 import javax.swing.border.*;
 import java.util.List;
 
-/**
- * ExpenseTracker - Budget-focused expense management application
- * Features: Date-based file storage, monthly budget tracking with auto-update
- */
 public class ExpenseTracker extends JFrame {
     private static final String DATA_FOLDER = "data";
     private static final String BUDGET_FILE = "monthly_budget.txt";
@@ -453,20 +449,17 @@ public class ExpenseTracker extends JFrame {
     }
    
     private String formatCurrency(double amount) {
-        // Format with Indian numbering system
         String formatted = String.format("%.2f", Math.abs(amount));
         String[] parts = formatted.split("\\.");
         String integerPart = parts[0];
         String decimalPart = parts[1];
        
-        // Add commas in Indian format
         StringBuilder result = new StringBuilder();
         int len = integerPart.length();
        
         if (len <= 3) {
             result.append(integerPart);
         } else {
-            // Last 3 digits
             result.insert(0, integerPart.substring(len - 3));
             int remaining = len - 3;
            
@@ -514,7 +507,6 @@ public class ExpenseTracker extends JFrame {
                 desc
             });
            
-            // Save to date-specific file
             saveExpenseToDateFile(selectedDate, date, amount, category, desc);
            
             // Auto-update UI
@@ -650,7 +642,6 @@ public class ExpenseTracker extends JFrame {
                     monthlyTotal += Double.parseDouble(amtStr);
                 }
             } catch (Exception ex) {
-                // Ignore date parsing errors
             }
         }
         return monthlyTotal;
@@ -686,31 +677,25 @@ public class ExpenseTracker extends JFrame {
                     monthlyTotal += amount;
                 }
             } catch (Exception ex) {
-                // Ignore date parsing errors
             }
         }
        
-        // Update total expenses
         totalLabel.setText(formatCurrency(total));
        
-        // Update monthly expenses
         monthlyLabel.setText(formatCurrency(monthlyTotal));
        
-        // Update monthly label color based on budget
         if (monthlyBudget > 0 && monthlyTotal > monthlyBudget) {
             monthlyLabel.setForeground(DANGER);
         } else {
             monthlyLabel.setForeground(ACCENT);
         }
        
-        // Update budget display in header
         if (monthlyBudget > 0) {
             budgetLabel.setText(formatCurrency(monthlyBudget));
         } else {
             budgetLabel.setText("Not Set");
         }
        
-        // Update top category
         if (!categoryMap.isEmpty()) {
             String topCategory = categoryMap.entrySet().stream()
                 .max(Map.Entry.comparingByValue())
@@ -720,7 +705,6 @@ public class ExpenseTracker extends JFrame {
             categoryWiseLabel.setText("-");
         }
 
-        /* ---------- Budget Remaining Calculation & Color ---------- */
         if (monthlyBudget > 0) {
             double remaining = monthlyBudget - monthlyTotal;
             remainingLabel.setText(formatCurrency(remaining));
@@ -736,11 +720,9 @@ public class ExpenseTracker extends JFrame {
             remainingLabel.setText("Not Set");
             remainingLabel.setForeground(BUDGET_COLOR);
         }
-        /* ---------------------------------------------------------- */
     }
    
     private void saveAllExpenses() {
-        // Group expenses by date and save to respective files
         Map<String, List<String[]>> expensesByDate = new HashMap<>();
        
         for (int i = 0; i < tableModel.getRowCount(); i++) {
@@ -755,7 +737,6 @@ public class ExpenseTracker extends JFrame {
                           .add(new String[]{dateTime, amount, category, desc});
         }
        
-        // Clear all existing files in data folder
         File dataFolder = new File(DATA_FOLDER);
         if (dataFolder.exists()) {
             File[] files = dataFolder.listFiles();
@@ -768,7 +749,6 @@ public class ExpenseTracker extends JFrame {
             }
         }
        
-        // Save expenses to date-specific files
         for (Map.Entry<String, List<String[]>> entry : expensesByDate.entrySet()) {
             String dateStr = entry.getKey();
             List<String[]> expenses = entry.getValue();
@@ -814,17 +794,14 @@ public class ExpenseTracker extends JFrame {
        
         for (File file : files) {
             try {
-                // Extract date from filename: expense_DD-MM-YYYY.txt
                 String fileName = file.getName();
                 String dateStr = fileName.substring(8, fileName.length() - 4);
                 Date fileDate = sdf.parse(dateStr);
                
-                // Check if file date is within range
                 if (!fileDate.before(from) && !fileDate.after(to)) {
                     loadExpensesFromFile(file);
                 }
             } catch (Exception ex) {
-                // Skip files with invalid date format
             }
         }
     }

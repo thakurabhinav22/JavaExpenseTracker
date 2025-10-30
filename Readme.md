@@ -24,3 +24,8 @@ It helps you track daily expenses, categorize them, set a **monthly budget**, an
    cd ExpenseTracker
    javac ExpenseTracker.java
    java ExpenseTracker
+
+**Run CLI Expense Tracker**
+ ```bash
+   javac CLI\ExpenseTrackerCLI.java
+   java -cp . CLI.ExpenseTrackerCLI

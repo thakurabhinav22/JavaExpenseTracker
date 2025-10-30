@@ -83,7 +83,7 @@ public class ExpenseTracker extends JFrame {
         JPanel leftPanel = new JPanel(new GridLayout(2, 1, 0, 5));
         leftPanel.setBackground(PRIMARY);
        
-        JLabel titleLabel = new JLabel("Expense Tracker Pro");
+        JLabel titleLabel = new JLabel("Expense Tracker");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 28));
         titleLabel.setForeground(Color.WHITE);
        
